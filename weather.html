@@ -1,0 +1,64 @@
+<!-- appid=3c6a190f0b52497579a6bef53c33af30 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" name="" id="search" placeholder="search city">
+    <button onclick="fetchWeather()">search</button>
+    <div class="container">
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4" id="result">
+
+            </div>
+            <div class="col-4"></div>
+        </div>
+    </div>
+</body>
+<script>
+    function fetchWeather(){
+        let placeName = search.value;
+        let appId = '3c6a190f0b52497579a6bef53c33af30';
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${placeName}&units=metric&appid=${appId}`)
+        // .then(res=>res.json())
+        // .then(data => console.log(data))
+
+        .then(res=>res.json())
+        .then((data)=>populateValue(data));
+    }
+    function populateValue(data){
+        // console.log(data);
+        // console.log(data.coord.lon);
+        let cityName=data.name;
+        let temp=data.main.temp;
+        let latitude=data.coord.lat;
+        let longitude=data.coord.lon;
+        let windSpeed=data.wind.speed;
+        let weatherType=data.weather[0].description;
+
+        console.log(data.weather[0].description);
+        let htmlData=`
+        <div class="card" style="width: 18rem;">
+            <div class="card-header">
+                current Weather : ${cityName}
+            </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">${temp}</li>
+    <li class="list-group-item">${windSpeed}</li>
+    <li class="list-group-item">${weatherType}</li>
+    <li class="list-group-item">${latitude}</li>
+    <li class="list-group-item">${longitude}</li>
+  </ul>
+</div>
+`;
+console.log(htmlData);
+result.innerHTML = htmlData;
+
+    }
+</script>
+</html>
